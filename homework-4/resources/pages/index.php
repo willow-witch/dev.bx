@@ -39,7 +39,7 @@ require_once "../../data/data/menu.php";
 				<div class="search-icon"></div>
 				<input class="search-row" type="search" placeholder="Поиск по каталогу..."></input>
 				<input class="search-button" type="button" value="ИСКАТЬ"></input>
-				<input class="add-button" type="button" value="Добавить фильм"></input>
+				<a class="add-link" href="hfgcg.html">Добавить фильм</a>
 			</div>
 			<div class="search-border"></div>
 		</div>
@@ -48,7 +48,11 @@ require_once "../../data/data/menu.php";
 			<div class="movie-list">
 				<?php foreach ($data as $film) : ?>
 				<div class="movie-list--item">
-					<input class="button-learn-more" type="button" value="Подробнее"></input>
+					<div class="movie-list--item-overlay">
+						<a href="fgfjjh.html" class="movie-list--item-more">
+							Подробнее
+						</a>
+					</div>
 					<div class="movie-list--item-image" style="background-image: url(<?=$film["image"]?>)"></div>
 					<div class="movie-list--item-head">
 						<div class="movie-list--item-title"><?=$film["title"]?></div>
