@@ -1,4 +1,5 @@
-# 1
+# 1. Вывести список фильмов, в которых снимались одновременно Арнольд Шварценеггер* и Линда Хэмилтон*.
+#   Формат: ID фильма, Название на русском языке, Имя режиссёра.
 select
 	distinct movie_actor.MOVIE_ID as 'movie id',
              movie_title.TITLE as 'movie title',
@@ -19,7 +20,8 @@ where movie_actor.MOVIE_ID in
        where ACTOR_ID=3)
   and movie_title.LANGUAGE_ID = 'ru';
 
-#2
+# 2. Вывести список названий фильмов на англйском языке с "откатом" на русский, в случае если название на английском не задано.
+#    Формат: ID фильма, Название.
 (
 	select movie_title.MOVIE_ID,
 	       movie_title.TITLE
@@ -41,7 +43,8 @@ union
 )
 order by MOVIE_ID;
 
-#3
+# 3. Вывести самый длительный фильм Джеймса Кэмерона*.
+#  Формат: ID фильма, Название на русском языке, Длительность.
 select movie_title.MOVIE_ID,
        movie_title.TITLE,
        movie.LENGTH
@@ -55,10 +58,11 @@ order by movie.LENGTH
 		desc
 limit 1;
 
-#4
+# 4. ** Вывести список фильмов с названием, сокращённым до 10 символов.
+# Если название короче 10 символов – оставляем как есть.
+# Если длиннее – сокращаем до 10 символов и добавляем многоточие.
 (
 	select
-		movie_title.MOVIE_ID,
 		movie_title.TITLE
 	from movie_title
 	where CHAR_LENGTH(movie_title.TITLE) < 10
@@ -66,14 +70,13 @@ limit 1;
 union
 (
 	select
-		movie_title.MOVIE_ID,
 		concat(substr(movie_title.TITLE, 1, 10), '...')
 	from movie_title
 	where CHAR_LENGTH(movie_title.TITLE) > 10
-)
-order by MOVIE_ID;
+);
 
-#5
+# 5. Вывести количество фильмов, в которых снимался каждый актёр.
+#    Формат: Имя актёра, Количество фильмов актёра.
 select
 	actor.NAME,
 	count(movie_actor.MOVIE_ID) as 'count'
@@ -82,7 +85,8 @@ from movie_actor
 	                on movie_actor.ACTOR_ID = actor.ID
 group by movie_actor.ACTOR_ID;
 
-#6
+# 6. Вывести жанры, в которых никогда не снимался Арнольд Шварценеггер*.
+#   Формат: ID жанра, название
 select
 	genre.ID,
 	genre.NAME
@@ -100,22 +104,29 @@ where genre.ID not in
              )
       );
 
-#7
-select movie_genre.MOVIE_ID,
-       count(movie_genre.GENRE_ID) as 'count'
+# 7. Вывести список фильмов, у которых больше 3-х жанров.
+#   Формат: ID фильма, название на русском языке
+select
+	movie_genre.MOVIE_ID,
+	movie_title.TITLE
 from movie_genre
+	     inner join movie_title
+	                on movie_genre.MOVIE_ID = movie_title.MOVIE_ID
+where LANGUAGE_ID = 'ru'
 group by movie_genre.MOVIE_ID
-having count(movie_genre.GENRE_ID) > 3;
+having count(movie_genre.GENRE_ID)>3;
 
-#8
+# 8. Вывести самый популярный жанр для каждого актёра.
+#   Формат вывода: Имя актёра, Жанр, в котором у актёра больше всего фильмов.
 select
 	distinct movie_actor.ACTOR_ID as 'actor',
              (
 	             select
-		             movie_genre.GENRE_ID
+		             genre.NAME
 	             from movie_genre
 		                  inner join movie_actor
 		                             on movie_actor.MOVIE_ID = movie_genre.MOVIE_ID
+		                  inner join genre on movie_genre.GENRE_ID = genre.ID
 	             where movie_actor.ACTOR_ID = actor
 	             group by movie_actor.ACTOR_ID, movie_genre.GENRE_ID
 	             order by count(movie_genre.GENRE_ID)
