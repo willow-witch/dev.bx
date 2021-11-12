@@ -54,17 +54,37 @@ function cutMovieGenres(string $movieGenres, int $symbolsQuantity = 31) : string
 	return $newGenres;
 }
 
-function getFilmsByGenre(string $genre, array $movies) : array
+function getFilmsByGenre(string $genre, array $movies, array $genres) : array
 {
 	$result = [];
 
+	$genreRus = getGenreRus($genre, $genres);
+
 	foreach ($movies as $movie)
 	{
-		if(in_array($genre, $movie['genres']))
+		if(in_array($genreRus, $movie['genres']))
 		{
 			$result[] = $movie;
 		}
 	}
 
 	return $result;
+}
+
+function getGenreRus(string $genreEng, array $genres) : string
+{
+	foreach($genres as $key=>$value)
+		if ($key==$genreEng)
+			return $value;
+}
+
+function getFilmById(int $filmId, $movies) : array
+{
+	foreach ($movies as $movie)
+	{
+		if ($movie['id'] == $filmId)
+		{
+			return $movie;
+		}
+	}
 }

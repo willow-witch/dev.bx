@@ -1,12 +1,11 @@
 <?php
 /** @var array $film */
 
-$link = http_build_query($film);
 ?>
 
 <div class="movie-list--item">
 	<div class="movie-list--item-overlay">
-		<a href="./film.php?<?=$link?>" class="movie-list--item-more">
+		<a href="./film.php?film_id=<?=$film['id']?>" class="movie-list--item-more">
 			Подробнее
 		</a>
 	</div>

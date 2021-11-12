@@ -31,7 +31,7 @@
 					<li class="menu-item--active">
 						<a href="<?=$point['link']?>?currentPage=<?=$point['name']?>"><?=$point['name']?></a>
 					</li>
-					<?php else: ?>
+				<?php else: ?>
 					<li class="menu-item">
 						<a href="<?=$point['link']?>?currentPage=<?=$point['name']?>"><?=$point['name']?></a>
 					</li>
@@ -39,13 +39,13 @@
 			<?php endforeach; ?>
 
 			<?php foreach($genres as $key=>$value): ?>
-				<?php if ($currentPage === $value): ?>
+				<?php if ($currentPage === $key): ?>
 					<li class="menu-item--active">
-						<a href="./index.php?genre=<?=$value?>&currentPage=<?=$value?>"> <?= $value?> </a>
+						<a href="./index.php?currentPage=<?=$key?>"> <?= $value?> </a>
 					</li>
 				<?php else: ?>
 					<li class="menu-item">
-						<a href="./index.php?genre=<?=$value?>&currentPage=<?= $value?>"> <?= $value?> </a>
+						<a href="./index.php?currentPage=<?= $key?>"> <?= $value?> </a>
 					</li>
 				<?php endif;?>
 			<?php endforeach; ?>

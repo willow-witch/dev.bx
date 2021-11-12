@@ -12,10 +12,10 @@ require_once "./lib/template-functions.php";
 require_once "./lib/movies-functions.php";
 require_once "./data/data/menu.php";
 
-if (isset($_GET['genre']))
+if (isset($_GET['currentPage']) && $currentPage != 'Главная')
 {
-	$movies = getFilmsByGenre($_GET['genre'], $movies);
-	$currentPage = $_GET['genre'];
+	$movies = getFilmsByGenre($_GET['currentPage'], $movies, $genres);
+	$currentPage = $_GET['currentPage'];
 }
 else
 {

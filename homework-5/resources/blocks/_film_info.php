@@ -23,13 +23,14 @@
 
 	<div class="film-content-body--info">
 		<div class="film-content-body--info-rating">
-			<?php for ($i=0; $i < numberOfPointsInRating($film['rating']); $i++): ?>
-			<div class="film-content-body--info-rating-scale-active">
-			</div>
-			<?php endfor;?>
-			<?php for ($i=0; $i < 10 - numberOfPointsInRating($film['rating']); $i++): ?>
-				<div class="film-content-body--info-rating-scale">
-				</div>
+			<?php for ($i=1; $i <= 10; $i++): ?>
+				<?php if ($i <= numberOfPointsInRating($film['rating'])): ?>
+					<div class="film-content-body--info-rating-scale-active">
+					</div>
+				<?php else: ?>
+					<div class="film-content-body--info-rating-scale">
+					</div>
+				<?php endif;?>
 			<?php endfor;?>
 			<div class="film-content-body--info-rating-rate">
 				<?= $film['rating'] ?>

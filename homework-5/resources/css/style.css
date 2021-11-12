@@ -10,7 +10,7 @@
 .sidebar {
 	display: block;
 	width: 400px;
-	height: fit-content;
+	height: 932vh;
 	background: #383838;
 }
 
@@ -90,6 +90,7 @@
 
 .movie-list--item {
 	display: inline-block;
+	vertical-align: top;
 	position: relative;
 	width: 370px;
 	height: 700px;
