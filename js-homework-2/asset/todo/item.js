@@ -2,6 +2,7 @@ export class Item
 {
 	title;
 	deleteButtonHandler;
+	editButtonHandler;
 
 	constructor({title, deleteButtonHandler})
 	{
@@ -28,7 +29,7 @@ export class Item
 
 		const buttonsContainer = document.createElement('div');
 		const deleteButton = document.createElement('button');
-		deleteButton.setAttribute('id', 'btn-delete')
+		deleteButton.setAttribute('class', 'btn-delete')
 		deleteButton.innerText = 'Delete';
 		buttonsContainer.append(deleteButton);
 		deleteButton.addEventListener('click', this.handleDeleteButtonClick.bind(this));
@@ -36,7 +37,7 @@ export class Item
 		// container.append(buttonsContainer);
 
 		const editButton = document.createElement('button');
-		editButton.setAttribute('id', 'btn-edit')
+		editButton.setAttribute('class', 'btn-edit')
 		editButton.innerText = 'Edit';
 		buttonsContainer.append(editButton);
 		editButton.addEventListener('click', this.handleEditButtonClick.bind(this));
@@ -54,10 +55,26 @@ export class Item
 		}
 	}
 
+	contains(selector, text) {
+	var elements = document.querySelectorAll(selector);
+	return Array.prototype.filter.call(elements, function(element){
+		return RegExp(text).test(element.textContent);
+	});
+}
+
 	handleEditButtonClick()
 	{
 		document.querySelector('[class="calendar-new-item-title"]').value = this.title;
-		document.getElementById('btn-delete').click();
+
+		const todoTags = document.getElementsByClassName("item-title");
+		for (let i = 0; i < todoTags.length; i++) {
+			if (todoTags[i].innerText === this.title) {
+				todoTags[i].innerText = '***' + this.title + '***';
+				break;
+			}
+		}
+		this.title = '***' + this.title + '***';
+		document.querySelector('[class="btn-add"]').innerText = 'Modify';
 	}
 
 }

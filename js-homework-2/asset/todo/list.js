@@ -81,6 +81,7 @@ export class List
 		const addInput = document.createElement('input');
 		addInput.classList.add('calendar-new-item-title');
 		const addButton = document.createElement('button');
+		addButton.setAttribute('class', 'btn-add')
 		addButton.innerText = 'Add';
 		addButton.addEventListener('click', this.handleAddButtonClick.bind(this));
 
@@ -94,6 +95,24 @@ export class List
 	handleAddButtonClick()
 	{
 		const addInput = this.container.querySelector('[class="calendar-new-item-title"]');
+		const addButton = document.querySelector('[class="btn-add"]');
+
+		let index = -1;
+		for (let i = 0; i < this.items.length; i++)
+		{
+			if (this.items[i].title.startsWith('***') && this.items[i].title.endsWith('***'))
+			{
+				index = i;
+				break;
+			}
+		}
+
+		if (addButton.innerText === 'Modify')
+		{
+			this.items.splice(index, 1);
+			addButton.innerText = 'Add';
+		}
+
 		if (addInput)
 		{
 			if (addInput.value.length === 0)
