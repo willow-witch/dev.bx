@@ -35,18 +35,23 @@ function cutMovieDescription(string $movieDescription, int $movieTitleLength, in
 		$newDescription = mb_substr($movieDescription, 0, $symbolsQuantity - 80);
 	}
 	$newDescription = substr($newDescription, 0,
-							 strripos($newDescription, ' ') + 1);
+							 strrpos($newDescription, ' ') + 1);
 	$newDescription .= "...";
 	return $newDescription;
 }
 
 function cutMovieGenres(string $movieGenres, int $symbolsQuantity = 31) : string
 {
-	$newGenres = mb_substr($movieGenres, 0, $symbolsQuantity);
-	$newGenres = substr($newGenres, 0,
-							 strripos($newGenres, ','));
-
-	return $newGenres;
+	if (strlen($movieGenres) < $symbolsQuantity)
+	{
+		return $movieGenres;
+	}
+	else
+	{
+		$newGenres = mb_substr($movieGenres, 0, $symbolsQuantity);
+		$newGenres = substr($newGenres, 0, strrpos($newGenres, ','));
+		return $newGenres;
+	}
 }
 
 function getGenreRus(string $genreEng, array $genres) : string
