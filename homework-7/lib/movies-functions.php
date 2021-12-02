@@ -91,12 +91,9 @@ function getGenresFromDB(mysqli $db) : array
 
 	$genres = [];
 
-	while($genre = mysqli_fetch_row($result))
+	while($genre = mysqli_fetch_assoc($result))
 	{
-		$genres[$genre[0]] = [
-			'NAME' => $genre[2],
-			'CODE' => $genre[1]
-		];
+		$genres[] = $genre;
 	}
 
 	return $genres;
@@ -104,22 +101,25 @@ function getGenresFromDB(mysqli $db) : array
 
 function getMoviesFromBD(mysqli $db, string $selectedGenre = '') : array
 {
-	$query = "select movie.ID, TITLE, ORIGINAL_TITLE, DESCRIPTION,
-			  DURATION, AGE_RESTRICTION, RELEASE_DATE, RATING,
-			  (select if (group_concat(genre.NAME) like '%{$selectedGenre}%', group_concat(genre.NAME), null)
-			   from genre
-			   where genre.ID in (
-				   select distinct GENRE_ID
-				   from movie_genre
-				   where MOVIE_ID = movie.ID
-			   )
-			  ) as 'genres',
-			   (select group_concat(actor.NAME) from movie_actor
-			   left join actor on movie_actor.ACTOR_ID = actor.ID
-				   where movie_actor.MOVIE_ID = movie.ID) as 'actors',
-				director.NAME as 'director'
-				from movie left join director on director.ID = movie.DIRECTOR_ID
-				having genres is not null
+	$query = "select movie.ID as 'id',
+       TITLE as 'title',
+       ORIGINAL_TITLE as 'original-title', DESCRIPTION as 'description',
+       DURATION as 'duration', AGE_RESTRICTION as 'age-restriction',
+       RELEASE_DATE as 'release-date', RATING as 'rating',
+       (select if (group_concat(genre.NAME) like '%{$selectedGenre}%', group_concat(genre.NAME), null)
+        from genre
+        where genre.ID in (
+	        select distinct GENRE_ID
+	        from movie_genre
+	        where MOVIE_ID = movie.ID
+        )
+       ) as 'genres',
+       (select group_concat(actor.NAME) from movie_actor
+	                                             left join actor on movie_actor.ACTOR_ID = actor.ID
+        where movie_actor.MOVIE_ID = movie.ID) as 'cast',
+       director.NAME as 'director'
+		from movie left join director on director.ID = movie.DIRECTOR_ID
+		having genres is not null
 				";
 
 	$result = mysqli_query($db, $query);
@@ -131,21 +131,9 @@ function getMoviesFromBD(mysqli $db, string $selectedGenre = '') : array
 
 	$films = [];
 
-	while($film = mysqli_fetch_row($result))
+	while($film = mysqli_fetch_assoc($result))
 	{
-		$films[] = [
-			'id' => $film[0],
-			'title' => $film[1],
-			'original-title' => $film[2],
-			'description' => $film[3],
-			'duration' => $film[4],
-			'age-restriction' => $film[5],
-			'release-date' => $film[6],
-			'rating' => $film[7],
-			'genres' => $film[8],
-			'cast' => $film[9],
-			'director' => $film[10]
-		];
+		$films[] = $film;
 	}
 
 	return $films;
